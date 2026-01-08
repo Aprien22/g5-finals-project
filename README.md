@@ -1,5 +1,4 @@
-# grp 5-linAlg
-Automated Matrix Diagonalizer projectttt
+# LINEAR ALGEBRA: Automated Matrix Diagonalizer projectttt
 
 Hi, guys. Dito ilalagay ang mga bagay-bagay.
 
