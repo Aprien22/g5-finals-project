@@ -2,10 +2,7 @@
 
 Hi, guys. Dito ilalagay ang mga bagay-bagay.
 
-Hello, everyone! Nag add lang ng File System para mas organize, 
-'cos ifl pag nasa main lahat magulo tingnan 'yun lang :D - Jm
-
--- ROLES --
+# -- ROLES -- 
 Daigo - Backend
 David - Overall Checker
 Guiriba - Frontend (UI/UX)
