@@ -11,5 +11,6 @@ Frontend
 ⦁	(Suggestion) Remove "Home" and have "Diagonalize" be the landing page instead.
 ⦁	(Suggestion) Should the concept/definition of "Diagonalization" be included here as well? 
 ⦁	(Suggestion) A dynamic table instead of inputting it by row. 
+    - A drop-down menu of 1x1 - 5x5 size of table
     - The inputted values in the table must be turned into a matrix, and then sent to the backend. 
 
