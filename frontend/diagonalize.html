@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="style/style.css">
+        <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css" />
+        <script defer type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Diagonalize - Automatic Matrix Diagonalizer</title>
+    </head>
+    <body>
+    <div class="topnav">
+        <a>AUTODIAG</a>
+        <a href="index.html">Home</a>
+        <a class="active" href="diagonalize.html">Diagonalize</a>
+        <a href="aboutus.html">About us</a>
+    </div>
+
+    <div class="container">
+        <h2>Matrix Diagonalization</h2>
+        
+        <div class="content-wrapper">
+            <!-- Left Side: Input -->
+            <div class="input-section">
+                <h3>Input Matrix</h3>
+                <p>Enter matrix rows separated by newlines, numbers by spaces.</p>
+                <p><em>Example:</em><br>1 2<br>2 1</p>
+                <textarea id="matrixInput" placeholder="1 2 3&#10;4 5 6"></textarea>
+                <button id="diagonalizebtn">Diagonalize</button>
+            </div>
+            
+            <!-- Right Side: Output -->
+            <div class="output-section">
+                <h3>Results</h3>
+                <div id="output" class="result-box"></div>
+            </div>
+        </div>
+    </div>
+
+    <py-config>
+        packages = ["numpy"]
+    </py-config>
+    
+    <script type="py">
+import numpy as np
+from js import document, window
+
+print("PyScript: Initializing diagonalization functions...")
+
+def parse_matrix_input(matrix_text):
+    """Parse matrix input from textarea and return as numpy array."""
+    lines = matrix_text.strip().split('\n')
+    matrix = []
+    
+    for line in lines:
+        if line.strip():
+            try:
+                row = [float(x) for x in line.strip().split()]
+                if matrix and len(row) != len(matrix[0]):
+                    return None, "Error: All rows must have the same number of columns."
+                matrix.append(row)
+            except ValueError:
+                return None, "Error: Invalid input. Please use numbers separated by spaces."
+    
+    if not matrix:
+        return None, "Error: Please enter a matrix."
+    
+    n = len(matrix)
+    m = len(matrix[0])
+    
+    if n != m:
+        return None, f"Error: Matrix must be square. You entered {n}x{m}."
+    
+    if n > 5:
+        return None, "Error: Matrix dimension must be 5x5 or smaller."
+    
+    return np.array(matrix, dtype=float), None
+
+def automated_matrix_diagonalizer(A):
+    """Diagonalize a matrix and return results."""
+    n = A.shape[0]
+    results = {}
+    results['original_matrix'] = np.array2string(A, precision=4, suppress_small=True)
+
+    # 1. Compute for Eigenvalues and Eigenvectors.
+    try:
+        eigenvalues, eigenvectors = np.linalg.eig(A)
+        # Cleans imaginary values from numpy calculations if they are negligible.
+        if np.allclose(eigenvalues.imag, 0):
+            eigenvalues = eigenvalues.real
+            eigenvectors = eigenvectors.real
+    except np.linalg.LinAlgError:
+        return None, "Error: LinAlgError. Matrix computation failed."
+
+    # 2. Matrix P.
+    P = eigenvectors
+
+    # 3. Check diagonalizability.
+    rank_P = np.linalg.matrix_rank(P)  # Checks if P is full rank.
+
+    if rank_P < n:
+        results['diagonalizable'] = False
+        results['reason'] = f"Rank of P is {rank_P} < {n}."
+        return results, None
+    else:
+        results['diagonalizable'] = True
+        
+        # 4. Matrix D.
+        D = np.diag(eigenvalues)
+
+        # 5. Display P and D, rounded for cleaner output.
+        D_display = np.round(D, decimals=4)
+        P_display = np.round(P, decimals=4)
+        
+        results['eigenvalues'] = np.array2string(np.round(eigenvalues, decimals=4), precision=4, suppress_small=True)
+        results['matrix_P'] = np.array2string(P_display, precision=4, suppress_small=True)
+        results['matrix_D'] = np.array2string(D_display, precision=4, suppress_small=True)
+
+        # 6. Verification
+        P_inv = np.linalg.inv(P)
+        check = P_inv @ A @ P
+        results['verified'] = np.allclose(check, D)
+        
+        return results, None
+
+def diagonalize_clicked():
+    """Handle diagonalize button click."""
+    try:
+        print("PyScript: diagonalize_clicked() called")
+        matrix_input = document.getElementById("matrixInput").value
+        output_div = document.getElementById("output")
+        
+        print(f"PyScript: Got matrix input: {matrix_input[:50]}...")
+        
+        # Parse matrix input
+        matrix, error = parse_matrix_input(matrix_input)
+        
+        if error:
+            print(f"PyScript: Parse error: {error}")
+            output_div.innerHTML = f"<p style='color: red;'>{error}</p>"
+            return
+        
+        print("PyScript: Matrix parsed successfully")
+        
+        # Diagonalize
+        results, error = automated_matrix_diagonalizer(matrix)
+        
+        if error:
+            print(f"PyScript: Diagonalization error: {error}")
+            output_div.innerHTML = f"<p style='color: red;'>{error}</p>"
+            return
+        
+        print("PyScript: Diagonalization successful")
+        
+        # Format output
+        if not results['diagonalizable']:
+            output_html = f"<p><strong>Result: Matrix is NOT diagonalizable</strong></p><p><strong>Reason:</strong> {results['reason']}</p><p><strong>Original Matrix:</strong><pre>{results['original_matrix']}</pre></p>"
+        else:
+            verified_text = "✓ Diagonalization verified: P⁻¹AP = D" if results['verified'] else "Verification failed"
+            output_html = f"<p><strong>Result: Matrix IS diagonalizable ✓</strong></p><p><strong>Original Matrix A:</strong><pre>{results['original_matrix']}</pre></p><p><strong>Eigenvalues:</strong><pre>{results['eigenvalues']}</pre></p><p><strong>Matrix P (Eigenvectors):</strong><pre>{results['matrix_P']}</pre></p><p><strong>Matrix D (Diagonal):</strong><pre>{results['matrix_D']}</pre></p><p><strong>Verification:</strong> {verified_text}</p>"
+        
+        output_div.innerHTML = output_html
+        print("PyScript: Output updated successfully")
+    except Exception as e:
+        print(f"PyScript: Exception occurred: {str(e)}")
+        output_div = document.getElementById("output")
+        output_div.innerHTML = f"<p style='color: red;'>Error: {str(e)}</p>"
+
+# Make the function available to JavaScript
+window.diagonalize_clicked = diagonalize_clicked
+print("PyScript: diagonalize_clicked function exposed to window")
+    </script>
+
+    <script src="scripts/app.js"></script>
+
+</body>
+</html>
