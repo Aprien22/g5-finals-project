@@ -1,0 +1,161 @@
+// dito ilalagay ang revised version ng Frontend Functionality Code
+
+// Matrix Diagonalization Application JavaScript
+// Generate sample identity matrix for given size
+function generateSampleMatrix(size) {
+    const matrix = [];
+    for (let i = 0; i < size; i++) {
+        const row = [];
+        for (let j = 0; j < size; j++) {
+            row.push(i === j ? 1 : 0);
+        }
+        matrix.push(row);
+    }
+    return matrix;
+}
+
+// Create matrix table dynamically
+function createMatrixTable(size) {
+    const table = document.getElementById("matrixTable");
+    const tbody = table.getElementsByTagName("tbody")[0];
+    tbody.innerHTML = "";
+    
+    // Generate sample matrix
+    const sampleMatrix = generateSampleMatrix(size);
+    
+    for (let i = 0; i < size; i++) {
+        const row = document.createElement("tr");
+        for (let j = 0; j < size; j++) {
+            const cell = document.createElement("td");
+            const input = document.createElement("input");
+            input.type = "number";
+            input.value = sampleMatrix[i][j];
+            input.step = "any";
+            input.className = "matrix-input";
+            input.setAttribute("aria-label", `Element [${i+1},${j+1}]`);
+            cell.appendChild(input);
+            row.appendChild(cell);
+        }
+        tbody.appendChild(row);
+    }
+}
+
+// Validate matrix input
+function validateMatrix() {
+    const table = document.getElementById("matrixTable");
+    const rows = table.getElementsByTagName("tr");
+    const output = document.getElementById("output");
+    
+    if (rows.length === 0) {
+        output.innerHTML = "<p style='color: red;'><strong>Error:</strong> Matrix is empty</p>";
+        return false;
+    }
+    
+    // Check all cells have numeric values
+    for (let i = 0; i < rows.length; i++) {
+        const inputs = rows[i].getElementsByTagName("input");
+        for (let j = 0; j < inputs.length; j++) {
+            const val = inputs[j].value.trim();
+            if (val === '' || isNaN(val)) {
+                output.innerHTML = `<p style='color: red;'><strong>Error:</strong> All cells must contain valid numbers (Cell [${i+1},${j+1}] is invalid)</p>`;
+                inputs[j].focus();
+                inputs[j].style.borderColor = "red";
+                return false;
+            }
+        }
+    }
+    
+    // Clear error styling
+    const allInputs = table.getElementsByTagName("input");
+    for (let input of allInputs) {
+        input.style.borderColor = "";
+    }
+    
+    return true;
+}
+
+// Setup matrix size selector
+function setupMatrixSizeSelector() {
+    const selector = document.getElementById("matrixSize");
+    if (selector) {
+        selector.addEventListener("change", function() {
+            const size = parseInt(this.value);
+            createMatrixTable(size);
+            document.getElementById("output").innerHTML = "";
+            console.log(`Matrix resized to ${size}x${size}`);
+        });
+    }
+}
+
+// Setup diagonalize button
+function setupDiagonalizeButton() {
+    const btn = document.getElementById("diagonalizebtn");
+    if (btn) {
+        btn.addEventListener("click", handleDiagonalize);
+        btn.disabled = false;
+    }
+}
+
+// Handle diagonalization process
+function handleDiagonalize() {
+    const output = document.getElementById("output");
+    const btn = document.getElementById("diagonalizebtn");
+    
+    // Validate matrix first
+    if (!validateMatrix()) {
+        return;
+    }
+    
+    // Disable button and show processing message
+    btn.disabled = true;
+    output.innerHTML = "<p style='color: #1976d2; text-align: center;'><strong>Processing matrix...</strong></p>";
+    
+    // Check if Python function is available
+    if (!window.diagonalize_clicked) {
+        output.innerHTML = "<p style='color: red;'><strong>Error:</strong> Python engine is not ready. Please refresh the page.</p>";
+        btn.disabled = false;
+        return;
+    }
+    
+    try {
+        // Call Python function
+        window.diagonalize_clicked();
+    } catch (err) {
+        console.error("Diagonalization error:", err);
+        output.innerHTML = `<p style='color: red;'><strong>Error:</strong> ${err.message || 'An unexpected error occurred'}</p>`;
+    } finally {
+        // Re-enable button
+        btn.disabled = false;
+    }
+}
+
+// Wait for PyScript to load
+function waitForPyScript() {
+    if (window.diagonalize_clicked && typeof window.diagonalize_clicked === 'function') {
+        setupDiagonalizeButton();
+        console.log("✓ PyScript loaded successfully");
+    } else {
+        setTimeout(waitForPyScript, 100);
+    }
+}
+
+// Initialize when DOM is ready
+function initializeApp() {
+    console.log("Initializing Matrix Diagonalization Application...");
+    
+    // Setup matrix size selector
+    setupMatrixSizeSelector();
+    
+    // Create initial 2x2 matrix
+    createMatrixTable(2);
+    
+    // Wait for PyScript to load
+    setTimeout(waitForPyScript, 500);
+}
+
+// Start initialization
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+    initializeApp();
+}
