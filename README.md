@@ -1,6 +1,6 @@
 # LINEAR ALGEBRA: Automated Matrix Diagonalizer projectttt
 
-<b>Linear Algebra</b.is a fundamental branch of mathematics that deals with vectors, matrices, and linear transformations. 
+<b>Linear Algebra</b> is a fundamental branch of mathematics that deals with vectors, matrices, and linear transformations. 
 It provides the theoretical foundation for understanding matrix operations and their applications in science, engineering, and computer science.
 
 ## ROLES 
