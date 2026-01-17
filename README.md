@@ -1,24 +1,50 @@
-# LINEAR ALGEBRA FINAL PROJECT
-<b>Linear Algebra</b> is a fundamental branch of mathematics that deals with vectors, matrices, and linear transformations. 
-It provides the theoretical foundation for understanding matrix operations and their applications in science, engineering, and computer science.
 
-# TASK: AUTOMATED MATRIX DIAGONALIZER
-Build a program/application that accepts an n-by-n matrix A, where n ≤ 5, and checks if the given matrix is diagonalizable or not. If the matrix A is diagonalizable, the program generates a nonsingular matrix P and a diagonal matrix D such that P^−1AP = D.
+# **LINEAR ALGEBRA FINAL PROJECT**
 
-<b>Matrix diagonalization</b> is a process that transforms a matrix into a diagonal form, simplifying complex matrix operations. This technique is essential for solving differential equations, computing matrix powers, and understanding the behavior of linear systems.
+**Linear Algebra** is a fundamental branch of mathematics that deals with vectors, matrices, and linear transformations.
+It provides the theoretical foundation for understanding matrix operations and their applications across science, engineering, and computer science.
 
-# LANGUAGE USED
-![Python](https://img.shields.io/badge/Python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+---
 
-# ROLES 
-[David](https://www.facebook.com/lornadaviid) - Overall Project Manager\
-[Guiriba](https://www.facebook.com/ronkris.guiriba) - Frontend (UI/UX)\
-[Valerio](https://www.facebook.com/lv.ruki21) - Frontend (Functionality)\
-[Daigo](https://www.facebook.com/khalil.daigo) - Backend\
-[Lallego](https://www.facebook.com/jm.lallego) - Quality Assurance
+# **TASK: AUTOMATED MATRIX DIAGONALIZER**
 
+The goal of this project is to build an application that:
 
-### GOOD LUCK SA ATIN!
+* Accepts an **n × n matrix A** (where n ≤ 5)
+* Checks whether the matrix is **diagonalizable**
+* If diagonalizable, generates:
+  * A **nonsingular matrix P**
+  * A **diagonal matrix D**
+    such that **P⁻¹AP = D**
+
+**Matrix diagonalization** transforms a matrix into diagonal form, simplifying complex computations.
+This technique is essential for:
+
+* Solving differential equations
+* Computing matrix powers
+* Understanding the behavior of linear systems
+
+---
+
+# **TECHNOLOGIES USED**
+![Python](https://img.shields.io/badge/Python-3670A0?style=for-the-badge\&logo=python\&logoColor=ffdd54)
+![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge\&logo=html5\&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge\&logo=css3\&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge\&logo=javascript\&logoColor=black)
+
+---
+
+# **TEAM ROLES**
+
+| Member                                              | Role                     |
+| --------------------------------------------------- | ------------------------ |
+| [David](https://www.facebook.com/lornadaviid)       | Project Manager          |
+| [Guiriba](https://www.facebook.com/ronkris.guiriba) | Frontend (UI/UX)         |
+| [Valerio](https://www.facebook.com/lv.ruki21)       | Frontend (Functionality) |
+| [Daigo](https://www.facebook.com/khalil.daigo)      | Backend                  |
+| [Lallego](https://www.facebook.com/jm.lallego)      | Quality Assurance        |
+
+---
+
+### **GOOD LUCK SA ATIN! 🚀**
+
