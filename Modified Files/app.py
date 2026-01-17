@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sympy as sp
 
-# Changes:
+# Changes
 # Added App.py
 # Added Flask Functionality to connect Front and Backend
 # Combines Backend and Frontend (Pyscript) Pyton code
